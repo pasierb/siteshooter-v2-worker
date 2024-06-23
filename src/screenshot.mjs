@@ -1,14 +1,10 @@
-import { execSync } from 'child_process';
+import 'dotenv/config';
 import puppeteer from "puppeteer-core";
-import fs from "fs";
-
-const chromiumPath = execSync("which chromium").toString();
 
 export async function takeScreenshot(params) {
   const { name, url, width, height } = params;
   const browser = await puppeteer.launch({
-    executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    // executablePath: chromiumPath,
+    executablePath: process.env.CHROME_EXECUTABLE_PATH,
     headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
