@@ -1,0 +1,21 @@
+{
+  "name": "browser-worker",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/server.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@fastify/bearer-auth": "^9.4.0",
+    "bull": "^4.13.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.28.0",
+    "puppeteer-core": "^22.12.0"
+  }
+}
