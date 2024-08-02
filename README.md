@@ -1,5 +1,19 @@
 # SiteShooter worker
 
+## How it works
+
+### Direct link embeedding
+
+i.e.
+
+```html
+<meta property="og:image" content="https://api.siteshooter.app/shoot?key=###&url=###>
+```
+
+Problem
+
+Images are generated asynchronously, but the call to get image is synchronous
+
 ## Server provisioning
 
 ```bash
