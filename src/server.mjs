@@ -1,4 +1,5 @@
 import "dotenv/config";
+import "./instrument.mjs";
 import crypto from "crypto";
 import Queue from "bull";
 import Fastify from "fastify";
