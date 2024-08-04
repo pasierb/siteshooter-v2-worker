@@ -15,7 +15,6 @@ const jobsQueue = new Queue(
   process.env.REDIS_CONNECTION_STRING
 );
 const fastify = Fastify({ logger: true });
-
 const callbacks = {};
 
 // Not perfect, but can not make it to work with non global events.
@@ -63,5 +62,6 @@ fastify.post("/v1/shoot", async (request, reply) => {
 try {
   await fastify.listen({ port: 3000 });
 } catch (e) {
+  console.error(e);
   process.exit(1);
 }
