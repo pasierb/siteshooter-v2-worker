@@ -32,6 +32,7 @@ fastify.post("/v1/shoot", async (request, reply) => {
   const { url, width = 1200, height = 627, hideElements = [] } = data;
 
   let jobData = { url, width, height, hideElements };
+  let exists = false;
   const hash = crypto
     .createHash("sha256")
     .update(JSON.stringify(jobData))
@@ -42,6 +43,7 @@ fastify.post("/v1/shoot", async (request, reply) => {
   try {
     if (await doesExist(name)) {
       console.log(`Screenshot ${name} already exists`);
+      exists = true;
     } else {
       const scheduledJob = await jobsQueue.add(jobData);
       await new Promise((resolve) => {
@@ -50,7 +52,7 @@ fastify.post("/v1/shoot", async (request, reply) => {
     }
 
     const screenshotUrl = new URL(name, `https://${CDN_DOMAIN}`).toString();
-    return reply.code(200).send({ screenshotUrl });
+    return reply.code(200).send({ screenshotUrl, fromCache: exists });
   } catch (error) {
     console.error(error);
     return reply.code(500).send({ error: "Failed to add job to queue" });
