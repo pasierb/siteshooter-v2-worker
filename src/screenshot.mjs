@@ -12,7 +12,16 @@ export async function takeScreenshot(params) {
   try {
     const page = await browser.newPage();
     await page.setViewport({ width, height });
+
+    let loadResolver;
+    const loadPromise = new Promise((resolve) => {
+      loadResolver = resolve;
+    });
+
+    page.on("load", loadResolver);
     await page.goto(url);
+
+    await waitForLoad(loadPromise, 3000);
     await maybeHideElements(page, hideElements);
 
     const base64 = await page.screenshot();
@@ -25,15 +34,26 @@ export async function takeScreenshot(params) {
   }
 }
 
+async function waitForLoad(loadPromise, timeout) {
+  return Promise.race([
+    loadPromise,
+    new Promise((resolve) => {
+      setTimeout(resolve, timeout);
+    }),
+  ]);
+}
+
 async function maybeHideElements(page, selectors) {
   if (selectors.length === 0) {
     return;
   }
 
-  await Promise.all(selectors.map((selector) => {
-    return page.evaluate((selector) => {
-      const elements = document.querySelectorAll(selector);
-      elements.forEach((element) => element.remove());
-    }, selector);
-  }));
+  await Promise.all(
+    selectors.map((selector) => {
+      return page.evaluate((selector) => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((element) => element.remove());
+      }, selector);
+    })
+  );
 }
