@@ -6,7 +6,11 @@ export async function takeScreenshot(params) {
   const browser = await puppeteer.launch({
     executablePath: process.env.CHROME_EXECUTABLE_PATH,
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-lazy-loading",
+    ],
   });
 
   try {
